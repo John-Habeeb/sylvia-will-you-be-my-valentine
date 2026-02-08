@@ -85,51 +85,85 @@
   justify-content: center;
   align-items: center;
   text-align: center;
+  overflow: hidden;
 }
 
 .yay-title {
-  font-size: 64px;
+  font-size: 70px;
   animation: popIn 0.8s ease-out;
 }
 
+.name-animate {
+  font-size: 48px;
+  margin: 10px 0;
+  animation: slideGlow 1.5s ease-out;
+}
+
 .yay-text {
-  font-size: 32px;
-  margin-top: 10px;
+  font-size: 30px;
+  margin: 10px 0 30px;
   animation: fadeUp 1.2s ease-out;
 }
 
+.yay-buttons {
+  display: flex;
+  gap: 16px;
+}
+
+.follow-btn,
+.replay-btn {
+  padding: 14px 28px;
+  font-size: 18px;
+  border-radius: 30px;
+  border: none;
+  cursor: pointer;
+}
+
+.follow-btn {
+  background: #ff4d6d;
+  color: white;
+}
+
+.replay-btn {
+  background: white;
+}
+
 @keyframes popIn {
-  0% {
-    transform: scale(0.4);
-    opacity: 0;
-  }
-  80% {
-    transform: scale(1.1);
-  }
-  100% {
-    transform: scale(1);
-    opacity: 1;
-  }
+  0% { transform: scale(0.4); opacity: 0; }
+  80% { transform: scale(1.1); }
+  100% { transform: scale(1); opacity: 1; }
 }
 
 @keyframes fadeUp {
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes slideGlow {
   from {
     opacity: 0;
-    transform: translateY(30px);
+    transform: translateY(-20px);
+    text-shadow: none;
   }
   to {
     opacity: 1;
     transform: translateY(0);
+    text-shadow: 0 0 15px rgba(255, 77, 109, 0.7);
   }
 }
 
-@keyframes floatUp {
-  from {
-    transform: translateY(0);
-    opacity: 1;
-  }
+/* CONFETTI */
+.confetti-piece {
+  position: fixed;
+  top: -20px;
+  width: 10px;
+  height: 16px;
+  animation: fall 5s linear forwards;
+}
+
+@keyframes fall {
   to {
-    transform: translateY(-110vh);
+    transform: translateY(110vh) rotate(720deg);
     opacity: 0;
   }
 }
@@ -172,33 +206,55 @@
     }
   });
 
-  function yesClicked() {
+function yesClicked() {
   document.body.innerHTML = `
     <div class="yay-screen">
-      <h1 class="yay-title">YAYYYYYY!!! 💕💐</h1>
-      <p class="yay-text">You just made me <br>so very happy 😘😘😘</p>
+      <div class="confetti"></div>
+
+      <h1 class="yay-title">YAYYYYYY!!! 🎉</h1>
+
+      <h2 class="name-animate">Sylvia 💖</h2>
+
+      <p class="yay-text">
+        You just made me<br><strong>VERY</strong> happy 😘😘😘
+      </p>
+
+      <div class="yay-buttons">
+        <button class="follow-btn" onclick="cantWait()">Can’t wait to see you 💕</button>
+        <button class="replay-btn" onclick="location.reload()">Replay 🔁</button>
+      </div>
+
+      <audio id="music" src="music.mp3"></audio>
     </div>
   `;
 
-  for (let i = 0; i < 25; i++) {
-    createHeart();
+  startConfetti();
+
+  const music = document.getElementById("music");
+  music.volume = 0.5;
+  music.play();
+}
+
+function cantWait() {
+  alert("I’m already smiling thinking about it 😊💐");
+}
+
+function startConfetti() {
+  for (let i = 0; i < 120; i++) {
+    const piece = document.createElement("div");
+    piece.className = "confetti-piece";
+    piece.style.left = Math.random() * 100 + "vw";
+    piece.style.animationDelay = Math.random() * 3 + "s";
+    piece.style.backgroundColor =
+      ["#ff4d6d", "#ffd166", "#4cc9f0", "#cdb4db"][
+        Math.floor(Math.random() * 4)
+      ];
+    document.body.appendChild(piece);
+
+    setTimeout(() => piece.remove(), 7000);
   }
 }
 
-function createHeart() {
-  const heart = document.createElement("div");
-  heart.innerHTML = "💖";
-  heart.style.position = "fixed";
-  heart.style.left = Math.random() * 100 + "vw";
-  heart.style.bottom = "-40px";
-  heart.style.fontSize = Math.random() * 30 + 24 + "px";
-  heart.style.animation = "floatUp 6s linear forwards";
-  document.body.appendChild(heart);
-
-  setTimeout(() => {
-    heart.remove();
-  }, 6000);
-}
 </script>
 
 </body>
