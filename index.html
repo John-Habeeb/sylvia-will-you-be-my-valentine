@@ -115,22 +115,17 @@
   });
 
   function yesClicked() {
-    document.body.innerHTML = `
-      <div style="
-        height:100vh;
-        display:flex;
-        flex-direction:column;
-        justify-content:center;
-        align-items:center;
-        background:linear-gradient(135deg,#ff9a9e,#fad0c4);
-        font-family:Arial;
-        text-align:center;
-      ">
-        <h1>YAYYYYYY!!! 💕💐</h1>
-        <p>You just made me so very happy 😘😘😘</p>
-      </div>
-    `;
+  document.body.innerHTML = `
+    <div class="yay-screen">
+      <h1 class="yay-title">YAYYYYYY!!! 💕💐</h1>
+      <p class="yay-text">You just made me <br>so very happy 😘😘😘</p>
+    </div>
+  `;
+
+  for (let i = 0; i < 25; i++) {
+    createHeart();
   }
+}
 </script>
 
 </body>
